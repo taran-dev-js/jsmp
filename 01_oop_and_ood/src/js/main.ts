@@ -6,7 +6,18 @@ import {Triangle} from './Triangle';
 // console.log(p.distance()) ;
 // console.log(p.distance(1, 2));
 // console.log(p.distance(new Point(4, 8)));
-// const t = new Triangle(new Point(1, 2), new Point(3, 7), new Point(5, 2));
-// console.log(t.toString());
-// const triangle = new Triangle(new Point(1, 2), new Point(3, 7), new Point(5, 2));
-// triangle.getPerimeter();
+const triangle = new Triangle(new Point(1, 2), new Point(2, 7), new Point(5, 2));
+const triangle2 = new Triangle(new Point(5, 5), new Point(5, 5), new Point(5, 2));
+const triangle3 = new Triangle(new Point(5, 5), new Point(5, 5), new Point(5, 5));
+
+triangle.getPerimeter();
+triangle2.getPerimeter();
+triangle3.getPerimeter();
+
+console.log(triangle.toString());
+console.log(triangle2.toString());
+console.log(triangle3.toString());
+
+triangle.printType();
+triangle2.printType();
+triangle3.printType();

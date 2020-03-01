@@ -8,7 +8,9 @@ export abstract class Shape {
 
     protected filled: boolean;
 
-    abstract toString(): string;
+    toString(): string {
+        return "A Shape with color of xxx and filled/Not filled";
+    }
 
     abstract getPerimeter(): void;
 }

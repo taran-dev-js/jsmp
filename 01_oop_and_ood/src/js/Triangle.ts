@@ -1,10 +1,14 @@
-import { Shape } from './Shape'
+import {Shape} from './Shape'
 import {Point} from './Point';
 
 export class Triangle extends Shape {
-    v1: Point;
-    v2: Point;
-    v3: Point;
+    private v1: Point;
+    private v2: Point;
+    private v3: Point;
+
+    private d1: number;
+    private d2: number;
+    private d3: number;
 
     constructor(x1: Point, x2: Point, x3: Point) {
         super();
@@ -12,22 +16,28 @@ export class Triangle extends Shape {
         this.v1 = x1;
         this.v2 = x2;
         this.v3 = x3;
-        // return `Triancle[v1=(${x1.x},${x1.y})]`;
     }
 
-    getPerimeter(): void {
-
-    }
-
-    toString(): any {
+    getPerimeter(): number {
         let {v1, v2, v3} = this;
+        const point = new Point();
 
-        return "Triangle[v1=(x1,y1),v2=(x2,y2),v3=(x3,y3)]"
-        // const t = this;
-        // return '' + t;
+        this.d1 = point.distance(v1);
+        this.d2 = point.distance(v2);
+        this.d3 = point.distance(v3);
+
+        return this.d1 + this.d2 + this.d3;
     }
 
-    printType() {
-
+    toString(): string {
+        let {v1, v2, v3} = this;
+        return `Triangle[v1=(${v1.x},${v1.y}),v2=(${v2.x},${v2.y}),v3=(${v3.x},${v3.y})]`
     }
+
+    printType(): void {
+        let {d1, d2, d3} = this;
+        const type = (d1 === d2 && d2 === d3) && 'equilateral' || (d1 === d2 || d1 === d3 || d2 === d3) && 'isosceles' || 'scalene';
+        console.log(type);
+    }
+
 }
