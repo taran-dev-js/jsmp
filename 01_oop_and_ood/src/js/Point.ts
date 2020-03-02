@@ -3,6 +3,7 @@ export class Point {
     y: number;
 
     constructor(pointX: number = 0, pointY: number = 0) {
+
         this.x = pointX;
         this.y = pointY
     }
@@ -34,9 +35,9 @@ export class Point {
     public distance(a?: Point | number, b?: number): number | string {
 
         if (typeof a === "object") {
-            return new Point().distance(a.x, a.y)
+            return new Point(this.x, this.y).distance(a.x, a.y)
         } else if (typeof a === "number" && b) {
-            return Math.abs(a - b);
+            return Math.sqrt(((a - this.x) ** 2) + ((b - this.y) ** 2));
         }
         return 0;
 

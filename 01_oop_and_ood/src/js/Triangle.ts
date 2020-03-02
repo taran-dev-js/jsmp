@@ -6,9 +6,10 @@ export class Triangle extends Shape {
     private v2: Point;
     private v3: Point;
 
-    private d1: number;
-    private d2: number;
-    private d3: number;
+    private d1: number = 0;
+    private d2: number = 0;
+    private d3: number = 0;
+
 
     constructor(x1: Point, x2: Point, x3: Point) {
         super();

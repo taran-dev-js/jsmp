@@ -1,5 +1,8 @@
 export abstract class Shape {
-    protected constructor() {
+    protected constructor();
+    protected constructor(color: string, filled: boolean);
+
+    protected constructor(color?: string, filled?: boolean) {
         this.color = 'green';
         this.filled = true;
     }
