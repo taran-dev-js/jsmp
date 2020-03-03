@@ -5,6 +5,10 @@ export abstract class Shape {
     protected constructor(color?: string, filled?: boolean) {
         this.color = 'green';
         this.filled = true;
+
+        if (!this.getPerimeter) {
+            throw new Error('getPerimeter is not defined')
+        }
     }
 
     protected color: string;
