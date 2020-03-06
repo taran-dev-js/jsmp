@@ -11,25 +11,6 @@ export class Sword extends Weapon {
 
     polish(): void {
         this.damageModifier += this.MODIFIER_CHANGE_RATE + (this.damage / 100 * 0.25);
+        // this.damageModifier += 50;
     }
 }
-
-const b = new Sword(30.4219, 0.7893, 300, 2.032);
-
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
-console.log(b.use());
