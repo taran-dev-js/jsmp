@@ -1,11 +1,11 @@
-import {Consumable} from './Consumable';
 import {Comparable} from '../interface/Comparable';
 
 const counter = 0;
+const id = 0;
 
-export class Item implements Comparable {
-    private id = 0;
-    private readonly counter = counter;
+export abstract class Item implements Comparable {
+    private id: number = id;
+    private readonly counter: number = counter;
     name: string;
     weight: number;
     value: number;
@@ -27,10 +27,11 @@ export class Item implements Comparable {
         } else {
             return other.name.toUpperCase() > this.name.toUpperCase() ? 1 : -1;
         }
-
     }
 
     get numberOfItems(): number { return this.counter }
+
+    get getID(): number { return this.id }
 
     reset(): void { this.id = 0 }
 

@@ -25,7 +25,6 @@ export abstract class Weapon extends Item {
 
         this.effectiveDurability -= this.MODIFIER_CHANGE_RATE;
 
-        // console.log(this.effectiveDurability);
         if (this.effectiveDurability === 0) {
             return baseMessage + `The ${this.name} breaks`;
         } else if (this.effectiveDurability < 0) {
