@@ -20,10 +20,9 @@ export abstract class Weapon extends Item {
     use(): string {
         this.effectiveDamage = this.floor(this.baseDamage + this.damageModifier);
         this.effectiveDurability = this.floor(this.baseDurability + this.durabilityModifier);
+        this.effectiveDurability -= this.MODIFIER_CHANGE_RATE;
 
         const baseMessage = `You use the ${this.name}, dealing ${this.floor(this.effectiveDamage)} points of damage.`;
-
-        this.effectiveDurability -= this.MODIFIER_CHANGE_RATE;
 
         if (this.effectiveDurability === 0) {
             return baseMessage + `The ${this.name} breaks`;

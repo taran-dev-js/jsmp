@@ -2,26 +2,40 @@ import {Sword} from "./Sword";
 import {Bow} from './Bow';
 import {Inventory} from './Inventory';
 import {ItemWeightComparator} from './ItemWeightComparator';
+import {Pizza} from './Pizza';
+import {Item} from "./abstractClass/Item";
 
+// Create the inventory
+const inventory: Inventory = new Inventory();
 
-const inventory = new Inventory();
+// Create a set of items
+const a: Item = new Sword(30.4219, 0.7893, 300, 2.032);
+const b: Item = new Sword(40, 0.7893, 200, 2);
+const c: Item = new Sword(40, 1, 100, 3);
+const pizza: Item = new Pizza(12, false);
 
-const a = new Bow(20.49, 0.7893, 250, 2);
-const b = new Bow(32, 0.7893, 200, 2.5);
-const e = new Bow(32, 0.7893, 200, 2.5);
-const c = new Sword(30, 0.7893, 230, 1);
-
+// Add the items to the inventory
 inventory.addItem(a);
 inventory.addItem(b);
 inventory.addItem(c);
-inventory.addItem(e);
+inventory.addItem(pizza);
 
+// Display the inventory
+console.log(inventory.toString(), '\n \n ');
+
+// Sort by natural order
 inventory.sort();
-console.log(inventory.toString());
-inventory.sort(new ItemWeightComparator());
-console.log(inventory.toString());
 
-// console.log(b.numberOfItems);
-console.log(c.getID);
-console.log(c.counterUp());
-console.log(c.getID);
+// Display the new inventory
+console.log(inventory.toString(), '\n \n ');
+
+// Sort by weight
+inventory.sort(new ItemWeightComparator());
+
+// Display the inventory again
+console.log(inventory.toString(), '\n \n ');
+
+// Use the sword
+console.log(a.use());
+console.log(a.use());
+

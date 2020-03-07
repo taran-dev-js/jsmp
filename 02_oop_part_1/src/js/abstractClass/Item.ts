@@ -4,8 +4,8 @@ const counter = 0;
 const id = 0;
 
 export abstract class Item implements Comparable {
-    private id: number = id;
     private readonly counter: number = counter;
+    private id: number = id;
     name: string;
     weight: number;
     value: number;
@@ -34,6 +34,8 @@ export abstract class Item implements Comparable {
     get getID(): number { return this.id }
 
     reset(): void { this.id = 0 }
+
+    abstract use(): string;
 
     toString(): string {
         return `${this.name} = Value: ${this.value}, weight: ${this.weight}`;
