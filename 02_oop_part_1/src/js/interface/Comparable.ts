@@ -1,10 +1,10 @@
-export {Item} from '../abstractClass/Item';
+import {Item} from "../abstractClass/Item";
 
 export interface Comparable {
-    // id: number;
-    // value: number;
-    // name: string;
-    // weight: number;
-    compareTo(other: any): number;
+    name: string;
+    value: number;
+    weight: number;
+    compareTo(other: Item): number;
     toString(): string;
+    use(): string;
 }

@@ -1,10 +1,3 @@
-import {Sword} from "./Sword";
-import {Bow} from './Bow';
-import {Inventory} from './Inventory';
-import {ItemWeightComparator} from './ItemWeightComparator';
-import {Pizza} from './Pizza';
-import {Item} from "./abstractClass/Item";
-
 // Create the inventory
 const inventory: Inventory = new Inventory();
 
@@ -21,21 +14,20 @@ inventory.addItem(c);
 inventory.addItem(pizza);
 
 // Display the inventory
-console.log(inventory.toString(), '\n \n ');
+console.log(inventory.toString());
 
 // Sort by natural order
 inventory.sort();
 
 // Display the new inventory
-console.log(inventory.toString(), '\n \n ');
+console.log(inventory.toString());
 
 // Sort by weight
 inventory.sort(new ItemWeightComparator());
 
 // Display the inventory again
-console.log(inventory.toString(), '\n \n ');
+console.log(inventory.toString());
 
 // Use the sword
 console.log(a.use());
 console.log(a.use());
-
