@@ -1,3 +1,5 @@
-export interface ItemComparator {
+import {Comparator} from "./Comparator";
+
+export interface ItemComparator extends Comparator{
 
 }
