@@ -1,5 +1,5 @@
 import {Page} from './Page';
-import {Iterator} from "./Iterator";
+import {PagesIterable} from "./PagesIterable";
 
 interface Interface {
     pageNumber: number;
@@ -10,25 +10,11 @@ interface Interface {
 export class Pages {
     pages: Array<Page>;
 
-    constructor(pages: Page[]) {
+    constructor(pages: Array<Page>) {
         this.pages = pages;
     }
 
-    get() {
-        return this.pages;
-    }
-
     [Symbol.iterator]() {
-        return new Iterator(this);
+        return new PagesIterable(this);
     }
-}
-
-const route = new Pages([
-    new Page(1, 'lorem', 'eww'),
-    new Page(2, 'lorem adfsf' , 'eww sd fasdsd'),
-    new Page(3, 'lorem adfsf' , 'eww sd fasdsd')
-]);
-
-for (let item of route) {
-    console.log(item);
 }

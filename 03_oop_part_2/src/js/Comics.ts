@@ -4,9 +4,9 @@ export class Comics {
     author: string;
     title: string;
     artist: string;
-    pages: Array<Pages>;
+    pages: Pages;
 
-    constructor(title: string, author: string, artist: string, pages: Array<Pages>) {
+    constructor(title: string, author: string, artist: string, pages: Pages) {
         this.title = title;
         this.author = author;
         this.artist = artist;

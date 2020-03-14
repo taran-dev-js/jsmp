@@ -1,5 +1,5 @@
 
-export class Iterator {
+export class PagesIterable  {
     private page: any;
     private nextIdx: number;
 
@@ -11,13 +11,13 @@ export class Iterator {
     next() {
         if (this.nextIdx === this.page.pages.length) {
             return {
-                value: null,
+                value: undefined,
                 done: true
             }
         }
 
         const result = {
-            value: this.page.get(this.nextIdx),
+            value: this.page.pages[this.nextIdx],
             done: false
         };
 

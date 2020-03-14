@@ -2,9 +2,9 @@ import {Pages} from "./Pages";
 
 export class Magazine {
     title: string;
-    pages: Array<Pages>;
+    pages: Pages;
 
-    constructor(title: string, pages: Array<Pages>) {
+    constructor(title: string, pages: Pages) {
         this.title = title;
         this.pages = pages;
     }
