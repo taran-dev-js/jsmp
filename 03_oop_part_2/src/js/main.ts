@@ -9,10 +9,11 @@ const book = new Book('TITLE', 'AUTHOR', new Pages([
 ]));
 
 for (let item of book) {
-    console.log(item);
+    // console.log(item);
+    console.dir(item.toString());
 }
 
-console.log(book.toString());
+// console.log(book.toString());
 
 const route = new Pages([
     new Page(1, 'lorem', 'eww'),

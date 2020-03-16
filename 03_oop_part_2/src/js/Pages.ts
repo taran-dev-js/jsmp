@@ -1,12 +1,6 @@
 import {Page} from './Page';
 import {PagesIterable} from "./PagesIterable";
 
-interface Interface {
-    pageNumber: number;
-    pageType: string;
-    pageMaterial: string;
-}
-
 export class Pages {
     pages: Array<Page>;
 
@@ -14,7 +8,7 @@ export class Pages {
         this.pages = pages;
     }
 
-    [Symbol.iterator]() {
-        return new PagesIterable(this);
-    }
+    // [Symbol.iterator]() {
+    //     return new PagesIterable(this);
+    // }
 }

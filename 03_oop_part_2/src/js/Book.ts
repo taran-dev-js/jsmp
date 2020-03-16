@@ -5,22 +5,16 @@ export class Book extends Item {
     title: string;
     author: string;
     pages: Pages;
-    pagesLength: number = 0;
 
     constructor(title: string, author: string, pages: Pages) {
-        super([title, author, pages]);
+        super(pages);
         this.title = title;
         this.author = author;
         this.pages = pages;
-
-        for (let item of this.pages) {
-            console.log(item);
-            this.pagesLength++;
-        }
     }
 
     toString(): string {
-        return `Book: ${this.title} by ${this.author} with number of pages: ${this.pagesLength}`
+        return `Book: ${this.title} by ${this.author} with number of pages: ${this.pages.pages.length}`
     }
 
     set setAuthor(author: string) { this.author = author }

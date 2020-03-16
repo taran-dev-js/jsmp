@@ -9,15 +9,15 @@ export class PagesIterable  {
     }
 
     next() {
-        if (this.nextIdx === this.page.pages.length) {
+        if (this.nextIdx === this.page.pages.pages.length) {
             return {
                 value: undefined,
                 done: true
             }
         }
-
+        // console.log(this.page.pages.pages);
         const result = {
-            value: this.page.pages[this.nextIdx],
+            value: this.page,
             done: false
         };
 
