@@ -15,7 +15,6 @@ export class PagesIterable  {
                 done: true
             }
         }
-        // console.log(this.page.pages.pages);
         const result = {
             value: this.page,
             done: false
