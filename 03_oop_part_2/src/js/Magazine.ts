@@ -3,10 +3,9 @@ import {Item} from './Item'
 
 export class Magazine extends Item {
     title: string;
-    pages: Pages;
 
     constructor(title: string, pages: Pages) {
-        super(pages);
+        super();
         this.title = title;
         this.pages = pages;
     }

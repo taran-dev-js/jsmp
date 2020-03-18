@@ -5,10 +5,9 @@ export class Comics extends Item {
     author: string;
     title: string;
     artist: string;
-    pages: Pages;
 
     constructor(title: string, author: string, artist: string, pages: Pages) {
-        super(pages);
+        super();
         this.title = title;
         this.author = author;
         this.artist = artist;

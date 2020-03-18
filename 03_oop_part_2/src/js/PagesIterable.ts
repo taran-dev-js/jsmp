@@ -1,22 +1,21 @@
-
 export class PagesIterable  {
-    private page: any;
+    private item: any;
     private nextIdx: number;
 
     constructor(page: any) {
-        this.page = page;
+        this.item = page;
         this.nextIdx = 0;
     }
 
     next() {
-        if (this.nextIdx === this.page.pages.pages.length) {
+        if (this.nextIdx === this.item.pages.pages.length) {
             return {
                 value: undefined,
                 done: true
             }
         }
         const result = {
-            value: this.page,
+            value: this.item,
             done: false
         };
 

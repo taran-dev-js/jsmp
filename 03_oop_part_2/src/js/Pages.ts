@@ -1,5 +1,4 @@
 import {Page} from './Page';
-import {PagesIterable} from "./PagesIterable";
 
 export class Pages {
     pages: Array<Page>;
@@ -8,7 +7,4 @@ export class Pages {
         this.pages = pages;
     }
 
-    // [Symbol.iterator]() {
-    //     return new PagesIterable(this);
-    // }
 }
