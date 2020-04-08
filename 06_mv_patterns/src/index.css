@@ -1,0 +1,37 @@
+html {
+    font-family: Verdana;
+}
+
+.container {
+    max-width: 600px;
+    padding-top: 30px;
+    margin: auto;
+}
+
+.currency {
+    padding: 10px;
+    background-color: #eee;
+    border-bottom: 1px solid #2214224f;
+}
+
+.currency_title {
+    margin: 0;
+}
+
+.currency_form {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+.currency_top {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.currency_bottom {
+    width: 50%;
+}
+.currency_bottom span {
+    display: block;
+}
