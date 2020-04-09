@@ -1,7 +1,8 @@
 import {APICurrency} from '../model/APICurrency';
 import {CurrencyTemplate} from '../view/currencyTemplate';
+import {StateProxy} from "./StateProxy";
 
-interface IState {
+export interface IState {
     pinEuro: boolean;
     rates: {
         [key: string]: {
@@ -12,24 +13,26 @@ interface IState {
         }
     };
 }
-interface Interface {
-    [key: string]: Function;
-}
+
 export class ConvertCurrency {
     state: IState;
     defaultValue: number = 100;
+    rates: Array<Element>;
 
     constructor() {
+        const stateProxy = new StateProxy();
         this.state = {
             pinEuro: false,
             rates: {}
         };
-        this.state = this.onChange(this.state);
-        // this.state.pinEuro = false;
-        // this.state.rates = {};
+
+        this.state = stateProxy.onChange(this.state);
+
         this.getCurrency()
             .then(() => {
                 this.renderView();
+                this.rates = [...document.querySelectorAll('[data-rate]')];
+
                 this.convert();
                 this.radio();
                 this.test()
@@ -37,48 +40,26 @@ export class ConvertCurrency {
 
     }
 
-    onChange(objToWatch: Object) {
-        const handler = {
-            get(target: any, property: any, receiver: Object): any {
-                if (typeof target[property] === 'object' && target[property] !== null) {
-                    return new Proxy(target[property], handler)
-                } else {
-                    return target[property];
-                }
-            },
-            set(target: any, property: any, value: any) {
-                // console.log('property', property);
-                // console.log('value, target', JSON.parse(JSON.stringify(value)), target);
-                // console.log('-----------');
-
-                const event = new CustomEvent('build', {
-                    'detail': {
-                        'property': property,
-                        'value': JSON.parse(JSON.stringify(value)),
-                        'target': target
-                    }
-                });
-
-                document.body.dispatchEvent(event);
-                return Reflect.set(target, property, value);
-            },
-            deleteProperty(target: Object, property: any) {
-                return Reflect.deleteProperty(target, property);
-            }
-        };
-        return new Proxy(objToWatch, handler);
-    }
-
     test(){
-        const rate = [...document.querySelectorAll('[data-rate]')];
         document.body.addEventListener('build', (e: CustomEvent) => {
-            console.log(e.detail);
-            const target = e.detail.target.name;
+            const detail = e.detail;
 
-            rate.forEach(item => {
-                const attr = item.getAttribute('data-currency-calculate-input');
+            if (detail.target.name) {
+                this.rates.forEach(item => {
+                    const inputs = [...item.querySelectorAll('[data-currency-calculate-input]')];
 
-            })
+                    inputs.forEach((elem: HTMLInputElement) => {
+                        const attr = elem.getAttribute('data-currency-calculate-input');
+
+                        if (detail.target.name === item.getAttribute('data-rate')) {
+                            if (detail.property === attr) {
+                                elem.value = detail.value
+                            }
+                        }
+                    })
+                })
+            }
+
         })
     }
 
@@ -125,55 +106,36 @@ export class ConvertCurrency {
     }
 
     convert() {
-        const rate = [...document.querySelectorAll('[data-rate]')];
-
-        rate.forEach(item => {
-            const inputs = [...item.querySelectorAll('[data-currency-calculate-input]')];
-            const defaultValueInput: HTMLInputElement = item.querySelector('.js-default-value');
-            const convertValueInput: HTMLInputElement = item.querySelector('.js-convert-value');
-            const inp = [...document.querySelectorAll('.js-default-value')];
+        this.rates.forEach(item => {
             const currency = item.getAttribute('data-rate');
             const targetCurrency = this.state.rates[currency];
 
             const hendler: { [key: string]: Function } = {
-                ['rate-value']: (value: number) => {
+                ['rate']: (value: number) => {
                     targetCurrency.rate = value;
-                    // console.log(value, targetCurrency.defaultValue, value * targetCurrency.defaultValue,'----------------------------');
                     targetCurrency.convertValue = value * targetCurrency.defaultValue;
-
-                    convertValueInput.value = String(targetCurrency.convertValue);//TODO View
                 },
-                ['convert-value']: (value: number) => {
+                ['convertValue']: (value: number) => {
                     targetCurrency.convertValue = value;
                     targetCurrency.defaultValue = Number((value / targetCurrency.rate).toFixed(3));
-
-                    defaultValueInput.value = String(targetCurrency.defaultValue)
                 },
-                ['default-value']: (value: number) => {
+                ['defaultValue']: (value: number) => {
                     if (this.state.pinEuro) {
                         hendler['all'](value);
-
-                        inp.forEach((i: HTMLInputElement) => {
-                            i.value = String(value);
-                        })
                     } else {
                         targetCurrency.defaultValue = value;
                         targetCurrency.convertValue = Number((value * targetCurrency.rate).toFixed(3));
-
-                        convertValueInput.value = String(targetCurrency.convertValue)
                     }
-
                 },
                 ['all']: (value: number) => {
                     for (let rateItem in this.state.rates) {
                         this.state.rates[rateItem].defaultValue = value;
-                        this.state.rates[rateItem].convertValue = value * targetCurrency.rate;
+                        this.state.rates[rateItem].convertValue = value * this.state.rates[rateItem].rate;
                     }
                 }
             };
 
             item.addEventListener('keyup', (e: Event) => {
-                console.log(e);
                 const target = (<HTMLInputElement>e.target);
                 const value = Number(target.value);
                 const attr: string = target.getAttribute('data-currency-calculate-input');
@@ -199,15 +161,11 @@ export class ConvertCurrency {
                 }
             }
         }
-    }
+    };
 
     renderView() {
         const template = new CurrencyTemplate();
-
-        for (let rate in this.state.rates) {
-            template.render(this.state.rates[rate])
-        }
-
+        for (let rate in this.state.rates) template.render(this.state.rates[rate])
     }
 
 }
