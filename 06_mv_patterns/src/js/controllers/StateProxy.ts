@@ -1,5 +1,11 @@
 import {IState} from "./ConvertCurrency";
 
+interface IEventDetail {
+    property: string;
+    value: Object | number | string;
+    target: IState;
+}
+
 export class StateProxy {
 
     onChange(objToWatch: IState) {
@@ -11,25 +17,23 @@ export class StateProxy {
                     return target[property];
                 }
             },
-            set(target: any, property: any, value: any) {
-                const event = new CustomEvent('build', {
-                    'detail': {
-                        'property': property,
-                        'value': JSON.parse(JSON.stringify(value)),
-                        'target': target
-                    }
+            set(target: IState, property: string, value: Object | number | string) {
+                StateProxy.createCustomEvent({
+                    property,
+                    value,
+                    target
                 });
 
-                document.body.dispatchEvent(event);
-
                 return Reflect.set(target, property, value);
-            },
-            deleteProperty(target: Object, property: any) {
-                return Reflect.deleteProperty(target, property);
             }
         };
 
         return new Proxy(objToWatch, handler);
+    }
+
+    private static createCustomEvent(detail: IEventDetail) {
+        const event = new CustomEvent('changeState', { 'detail': detail});
+        document.body.dispatchEvent(event);
     }
 }
 

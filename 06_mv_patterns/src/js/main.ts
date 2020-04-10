@@ -1,2 +1,3 @@
-import './view/CurrencyTemplate'
-import './controllers/ConvertCurrency'
+import {ConvertCurrency} from "./controllers/ConvertCurrency";
+
+new ConvertCurrency();

@@ -8,6 +8,15 @@ html {
     margin: auto;
 }
 
+.top-label {
+    display: inline-block;
+    padding: 10px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
 .currency {
     padding: 10px;
     background-color: #eee;
@@ -32,6 +41,7 @@ html {
 .currency_bottom {
     width: 50%;
 }
+
 .currency_bottom span {
     display: block;
 }
