@@ -10,7 +10,7 @@ export class StateProxy {
 
     onChange(objToWatch: IState) {
         const handler = {
-            get(target: any, property: any, receiver: Object): any {
+            get(target: any, property: any, receiver: any): any {
                 if (typeof target[property] === 'object' && target[property] !== null) {
                     return new Proxy(target[property], handler)
                 } else {
@@ -18,11 +18,7 @@ export class StateProxy {
                 }
             },
             set(target: IState, property: string, value: Object | number | string) {
-                StateProxy.createCustomEvent({
-                    property,
-                    value,
-                    target
-                });
+                StateProxy.createCustomEvent({ property, value, target });
 
                 return Reflect.set(target, property, value);
             }

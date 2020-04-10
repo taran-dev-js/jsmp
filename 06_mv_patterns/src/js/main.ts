@@ -1,3 +1,3 @@
-import {ConvertCurrency} from "./controllers/ConvertCurrency";
+import {ChooseView} from "./controllers/ChooseView";
 
-new ConvertCurrency();
+new ChooseView();

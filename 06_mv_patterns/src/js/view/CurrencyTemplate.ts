@@ -1,29 +1,24 @@
-export class CurrencyTemplate {
+export abstract class CurrencyTemplate {
     wrapper = document.getElementById('container');
+    maxRange: number = 1000;
 
-    render(model: any) {
-        const template = (data: any) => `
-        <div class="currency" data-rate="${data.name}">
-            <h3 class="currency_title">${data.name}</h3>
-            <form action="#" class="currency_form">
-                <label class="currency_top">
-                    <span class="currency_top-text">1 EURO is </span>
-                    <input type="number" value="${data.rate}" data-currency-calculate-input="rate" class="currency_input js-rate">
-                    <span class="currency_top-text">${data.name}</span>
-                </label>
-                <label class="currency_bottom">
-                    <span>EURO</span>
-                    <input type="number" value="${data.defaultValue}" data-currency-calculate-input="defaultValue" class="currency_input js-default-value">
-                </label>
-                <label class="currency_bottom">
-                    <span>${data.name}</span>
-                    <input type="number" value="${data.convertValue}" data-currency-calculate-input="convertValue" class="currency_input js-convert-value">
-                </label>
-            </form>
-        </div>`;
-
-        this.wrapper.innerHTML += template(model);
-
+    constructor() {
+        this.renderButton();
     }
+
+    private renderButton() {
+        const template = `
+        <label class="top-label">
+            Pin Euro
+            <input type="radio" name="euro" value="all" id="pin-radio">
+        </label>
+        <label class="top-label">
+            Unpin Euro
+            <input type="radio" name="euro" value="one" id="unpin-radio" checked>
+        </label>`;
+        this.wrapper.innerHTML += template;
+    }
+
+    abstract render(data: any): void;
 }
 
