@@ -41,6 +41,7 @@ export abstract class ConvertCurrency {
     }
 
     abstract updateView(): void;
+    abstract renderView(): void;
 
     handlerPinEuro() {
         const radioInput = [...document.querySelectorAll('[type="radio"]')];
@@ -117,8 +118,6 @@ export abstract class ConvertCurrency {
             }
         }
     };
-
-    abstract renderView(): void;
 
     static toNumberFloor(value: number): number {
         return Number((value).toFixed(3));
