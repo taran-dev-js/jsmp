@@ -1,167 +1,180 @@
-export class Game {
+import { Notification } from './notification';
 
-    private players: Array<string> = [];
-    private places: Array<number> = [];
-    private purses: Array<number> = [];
-    private inPenaltyBox: Array<boolean> = [];
-    private currentPlayer: number = 0;
-    private isGettingOutOfPenaltyBox: boolean = false;
-
-    private popQuestions: Array<string> = [];
-    private scienceQuestions: Array<string> = [];
-    private sportsQuestions: Array<string> = [];
-    private rockQuestions: Array<string> = [];
-
-    constructor() {
-
-        for (let i = 0; i < 50; i++) {
-            this.popQuestions.push("Pop Question " + i);
-            this.scienceQuestions.push("Science Question " + i);
-            this.sportsQuestions.push("Sports Question " + i);
-            this.rockQuestions.push(this.createRockQuestion(i));
-          }
-    }
-
-    private createRockQuestion(index: number): string {
-        return "Rock Question " + index;
-    }
-
-    public add(name: string): boolean {
-        this.players.push(name);
-        this.places[this.howManyPlayers() - 1] = 0;
-        this.purses[this.howManyPlayers() - 1] = 0;
-        this.inPenaltyBox[this.howManyPlayers() - 1] = false;
-
-        console.log(name + " was added");
-        console.log("They are player number " + this.players.length);
-
-        return true;
-    }
-
-    private howManyPlayers(): number {
-        return this.players.length;
-    }
-
-    public roll(roll: number) {
-        console.log(this.players[this.currentPlayer] + " is the current player");
-        console.log("They have rolled a " + roll);
-
-        if (this.inPenaltyBox[this.currentPlayer]) {
-          if (roll % 2 != 0) {
-            this.isGettingOutOfPenaltyBox = true;
-
-            console.log(this.players[this.currentPlayer] + " is getting out of the penalty box");
-            this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll;
-            if (this.places[this.currentPlayer] > 11) {
-              this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
-            }
-
-            console.log(this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]);
-            console.log("The category is " + this.currentCategory());
-            this.askQuestion();
-          } else {
-            console.log(this.players[this.currentPlayer] + " is not getting out of the penalty box");
-            this.isGettingOutOfPenaltyBox = false;
-          }
-        } else {
-
-          this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll;
-          if (this.places[this.currentPlayer] > 11) {
-            this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
-          }
-
-          console.log(this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]);
-          console.log("The category is " + this.currentCategory());
-          this.askQuestion();
-        }
-    }
-
-    private askQuestion(): void {
-        if (this.currentCategory() == 'Pop')
-            console.log(this.popQuestions.shift());
-        if (this.currentCategory() == 'Science')
-            console.log(this.scienceQuestions.shift());
-        if (this.currentCategory() == 'Sports')
-            console.log(this.sportsQuestions.shift());
-        if (this.currentCategory() == 'Rock')
-            console.log(this.rockQuestions.shift());
-    }
-
-    private currentCategory(): string {
-        if (this.places[this.currentPlayer] == 0)
-            return 'Pop';
-        if (this.places[this.currentPlayer] == 4)
-            return 'Pop';
-        if (this.places[this.currentPlayer] == 8)
-            return 'Pop';
-        if (this.places[this.currentPlayer] == 1)
-            return 'Science';
-        if (this.places[this.currentPlayer] == 5)
-            return 'Science';
-        if (this.places[this.currentPlayer] == 9)
-            return 'Science';
-        if (this.places[this.currentPlayer] == 2)
-            return 'Sports';
-        if (this.places[this.currentPlayer] == 6)
-            return 'Sports';
-        if (this.places[this.currentPlayer] == 10)
-            return 'Sports';
-        return 'Rock';
-    }
-
-    private didPlayerWin(): boolean {
-        return !(this.purses[this.currentPlayer] == 6)
-    }
-
-    public wrongAnswer(): boolean {
-        console.log('Question was incorrectly answered');
-        console.log(this.players[this.currentPlayer] + " was sent to the penalty box");
-        this.inPenaltyBox[this.currentPlayer] = true;
-
-        this.currentPlayer += 1;
-        if (this.currentPlayer == this.players.length)
-            this.currentPlayer = 0;
-        return true;
-    }
-
-    public wasCorrectlyAnswered(): boolean {
-        if (this.inPenaltyBox[this.currentPlayer]) {
-            if (this.isGettingOutOfPenaltyBox) {
-              console.log('Answer was correct!!!!');
-              this.purses[this.currentPlayer] += 1;
-              console.log(this.players[this.currentPlayer] + " now has " +
-              this.purses[this.currentPlayer] + " Gold Coins.");
-
-              var winner = this.didPlayerWin();
-              this.currentPlayer += 1;
-              if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
-
-              return winner;
-            } else {
-              this.currentPlayer += 1;
-              if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
-              return true;
-            }
-
-
-          } else {
-
-            console.log("Answer was correct!!!!");
-
-            this.purses[this.currentPlayer] += 1;
-            console.log(this.players[this.currentPlayer] + " now has " +
-                this.purses[this.currentPlayer] + " Gold Coins.");
-
-            var winner = this.didPlayerWin();
-
-            this.currentPlayer += 1;
-            if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
-
-            return winner;
-          }
-    }
-
+enum Category {
+    Science = 'Science',
+    Pop = 'Pop',
+    Sports = 'Sports',
+    Rock = 'Rock',
 }
+
+export const availableCategories = [Category.Science, Category.Pop, Category.Sports, Category.Rock];
+
+const PlaceCategoryMap = {
+    [0]: Category.Pop,
+    [4]: Category.Pop,
+    [8]: Category.Pop,
+    [1]: Category.Science,
+    [5]: Category.Science,
+    [9]: Category.Science,
+    [2]: Category.Sports,
+    [6]: Category.Sports,
+    [10]: Category.Sports,
+}
+
+type Questions = string[];
+
+type Player = {
+    name: string,
+    place: number,
+    purse: number,
+    inPenaltyBox: boolean,
+};
+
+export type GameOptions = {
+    maxScore: number,
+    questionsNumber: number,
+    availableCategories: Category[],
+};
+
+export interface IGame {
+    addNewPlayer: (name: string) => boolean;
+    roll: (roll: number) => void;
+    wrongAnswer: () => boolean;
+    correctAnswer: () => boolean;
+}
+
+export const GameCreator = (logger: (string) => void) => {
+    return class implements IGame {
+        private players: Player[] = [];
+        private currentPlayer: number = 0;
+        private isGettingOutOfPenaltyBox: boolean = false;
+        private questions: Questions[] = [];
+
+        private maxScore: number = 6;
+        private questionsNumber: number = 50;
+
+        constructor(option: GameOptions) {
+            const {
+                maxScore,
+                questionsNumber,
+                availableCategories,
+            } = option;
+
+            this.maxScore = maxScore;
+            this.questionsNumber = questionsNumber;
+            this.createQuestions(availableCategories);
+        }
+
+        private createQuestions = (categories) => {
+            categories.forEach(this.addQuestionsByCategory);
+        }
+
+        private addQuestionsByCategory = (category: Category) => {
+            if (!this.questions[category]) {
+                this.questions[category] = [];
+            }
+
+            for (let i = 0; i < this.questionsNumber; i++) {
+                this.questions[category].push(Notification.question({category, i}));
+            }
+        }
+
+        public addNewPlayer = (name: string): boolean => {
+            this.players.push(this.createPlayer(name));
+
+            logger(Notification.nameAdded({name}));
+            logger(Notification.playerNumber({number: this.players.length}));
+
+            return true;
+        }
+
+        private createPlayer = (name) => {
+            return {
+                name,
+                place: 0,
+                purse: 0,
+                inPenaltyBox: false,
+            }
+        }
+
+        public roll = (roll: number) => {
+            const maxRollResult = 12;
+            const currentPlayer = this.players[this.currentPlayer];
+            logger(Notification.currentPlayer({name: currentPlayer.name}));
+            logger(Notification.playerRolled({roll}));
+
+            if (currentPlayer.inPenaltyBox) {
+                if (!(roll % 2 != 0)) {
+                    logger(Notification.gettingOutOfPenaltyBox({name: currentPlayer.name, isOut: false}));
+                    this.isGettingOutOfPenaltyBox = false;
+                    return;
+                } else {
+                    logger(Notification.gettingOutOfPenaltyBox({name: currentPlayer.name, isOut: true}));
+                    this.isGettingOutOfPenaltyBox = true;
+                }
+            }
+
+            currentPlayer.place = currentPlayer.place + roll;
+            if (currentPlayer.place > maxRollResult - 1) {
+                currentPlayer.place = currentPlayer.place - maxRollResult;
+            }
+
+            logger(Notification.playerLocation({name: currentPlayer.name, place: currentPlayer.place}));
+            logger(Notification.currentCategory({category: this.getCurrentCategory()}));
+            logger(this.getQuestion());
+        }
+
+        private getQuestion(): string {
+            return this.questions[this.getCurrentCategory()].shift()
+        }
+
+        private getCurrentCategory(): Category {
+            const currentPlayer = this.players[this.currentPlayer];
+            return PlaceCategoryMap[currentPlayer.place] || Category.Rock;
+        }
+
+        private didPlayerWin(player: Player): boolean {
+            return player.purse >= this.maxScore;
+        }
+
+        public wrongAnswer(): boolean {
+            const currentPlayer = this.players[this.currentPlayer];
+
+            logger(Notification.wrongAnswer());
+            logger(Notification.playerGoToPenaltyBox({name: currentPlayer.name}));
+
+            currentPlayer.inPenaltyBox = true;
+
+            this.goToNextPlayer();
+            return false;
+        }
+
+        public correctAnswer(): boolean {
+            const currentPlayer = this.players[this.currentPlayer];
+
+            if (currentPlayer.inPenaltyBox && !this.isGettingOutOfPenaltyBox) {
+                this.goToNextPlayer();
+                return false;
+            }
+
+            logger(Notification.correctAnswer());
+            currentPlayer.purse++;
+            logger(Notification.playerScore({name: currentPlayer.name, purse: currentPlayer.purse}));
+
+            const isWinner = this.didPlayerWin(currentPlayer);
+            this.goToNextPlayer();
+            return isWinner;
+        }
+
+        private goToNextPlayer() {
+            this.currentPlayer++;
+
+            if (this.currentPlayer == this.players.length) {
+                this.currentPlayer = 0;
+            }
+        }
+
+    }
+}
+
+export const Game = GameCreator(console.log);
