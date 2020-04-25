@@ -1,0 +1,1 @@
+https://github.com/oneblink/async-priority-queue/blob/master/lib/async.js
